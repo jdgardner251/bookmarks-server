@@ -1,5 +1,6 @@
 const express = require('express')
 const { v4: uuid } = require("uuid");
+const { isWebUri } = require('valid-url')
 const logger = require('../logger')
 const { bookmarks } = require('../store')
 
@@ -33,7 +34,7 @@ bookmarksRouter
       
           const bookmark = { id: uuid(), title, url, description, rating }
 
-          store.bookmarks.push(bookmark)
+          bookmarks.push(bookmark)
 
           logger.info(`Bookmark with id ${bookmark.id} created`)
           res
@@ -66,9 +67,9 @@ bookmarksRouter
             return res.status(404).send('Not found.')
         }
         // remove bookmark from list
-        store.bookmarks.splice(bookmarkIndex, 1)
+        bookmarks.splice(bookmarkIndex, 1)
 
-        logger.info(`Bookmark with id ${bookmark_id} deleted.`)
+        logger.info(`Bookmark with id ${id} deleted.`)
         res
           .status(204)
           .end()
